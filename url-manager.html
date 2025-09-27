@@ -106,14 +106,11 @@
             const randomString = generateRandomString();
             currentUrl = `${BASE_URL}/main.html?path=${randomString}`;
             
-            // 更新localStorage中的有效路径，使旧网址失效
-            localStorage.setItem('validPath', randomString);
-            
             // 更新显示
             document.getElementById('currentUrl').href = currentUrl;
             document.getElementById('currentUrl').textContent = currentUrl;
             
-            alert('✅ 新网址已生成！\n\n注意：旧网址已失效，只有新网址可以访问。');
+            alert('✅ 新网址已生成！\n\n注意：由于技术限制，生成的网址可能无法跨浏览器使用。\n建议在同一浏览器中测试。');
         }
         
         // 创建新的HTML文件

@@ -32,11 +32,11 @@
                     return;
                 }
                 
-                // 检查时间戳是否有效（3小时内，更短的时间限制）
+                // 检查时间戳是否有效（6小时内，实现跨设备失效）
                 const currentTime = Date.now();
                 const urlTimestamp = parseInt(urlTime);
                 const timeDiff = currentTime - urlTimestamp;
-                const maxAge = 3 * 60 * 60 * 1000; // 3小时
+                const maxAge = 6 * 60 * 60 * 1000; // 6小时
                 
                 if (timeDiff > maxAge) {
                     console.log('❌ 网址已过期:', timeDiff, 'ms');
@@ -44,7 +44,7 @@
                     return;
                 }
                 
-                // 检查是否是当前最新的网址（通过时间戳比较）
+                // 检查是否是当前最新的网址（通过时间戳比较，实现同设备失效）
                 const latestUrlTime = localStorage.getItem('latestUrlTime');
                 if (latestUrlTime && parseInt(urlTime) < parseInt(latestUrlTime)) {
                     console.log('❌ 网址已失效，有更新的网址');
@@ -52,8 +52,9 @@
                     return;
                 }
                 
-                // 更新最新网址时间戳
+                // 更新最新网址时间戳（验证通过后更新）
                 localStorage.setItem('latestUrlTime', urlTime);
+                
                 
                 console.log('✅ 路径有效:', currentPath);
             } catch (error) {

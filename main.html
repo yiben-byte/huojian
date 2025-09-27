@@ -15,21 +15,33 @@
                 // 获取URL参数中的valid参数（有效路径）
                 const validPath = urlParams.get('valid');
                 
-                // 如果没有valid参数，使用默认路径
-                if (!validPath) {
-                    // 检查是否是初始有效路径
-                    if (currentPath !== 'Smqoal66yAWajLfdytPf') {
-                        console.log('❌ 路径无效:', currentPath, '需要valid参数');
-                        window.location.replace('expired.html?v=' + Date.now());
-                        return;
-                    }
-                } else {
-                    // 检查当前路径是否与valid参数匹配
-                    if (currentPath !== validPath) {
-                        console.log('❌ 路径无效:', currentPath, '有效路径:', validPath);
-                        window.location.replace('expired.html?v=' + Date.now());
-                        return;
-                    }
+                // 获取URL参数中的time参数（时间戳）
+                const urlTime = urlParams.get('time');
+                
+                // 统一验证逻辑：所有路径都必须有valid和time参数
+                if (!validPath || !urlTime) {
+                    console.log('❌ 路径无效:', currentPath, '缺少valid或time参数');
+                    window.location.replace('expired.html?v=' + Date.now());
+                    return;
+                }
+                
+                // 检查当前路径是否与valid参数匹配
+                if (currentPath !== validPath) {
+                    console.log('❌ 路径无效:', currentPath, '有效路径:', validPath);
+                    window.location.replace('expired.html?v=' + Date.now());
+                    return;
+                }
+                
+                // 检查时间戳是否有效（24小时内）
+                const currentTime = Date.now();
+                const urlTimestamp = parseInt(urlTime);
+                const timeDiff = currentTime - urlTimestamp;
+                const maxAge = 24 * 60 * 60 * 1000; // 24小时
+                
+                if (timeDiff > maxAge) {
+                    console.log('❌ 网址已过期:', timeDiff, 'ms');
+                    window.location.replace('expired.html?v=' + Date.now());
+                    return;
                 }
                 
                 console.log('✅ 路径有效:', currentPath);

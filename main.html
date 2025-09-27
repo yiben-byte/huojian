@@ -12,18 +12,24 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const currentPath = urlParams.get('path');
                 
-                // 硬编码的有效路径列表（真正的有效链接）
-                const validPaths = [
-                    'Smqoal66yAWajLfdytPf',  // 初始有效路径
-                    // 这里可以添加更多有效路径
-                ];
+                // 获取URL参数中的valid参数（有效路径）
+                const validPath = urlParams.get('valid');
                 
-                // 检查当前路径是否在有效列表中
-                if (!validPaths.includes(currentPath)) {
-                    console.log('❌ 路径无效:', currentPath, '有效路径列表:', validPaths);
-                    // 立即重定向，阻止页面渲染
-                    window.location.replace('expired.html?v=' + Date.now());
-                    return;
+                // 如果没有valid参数，使用默认路径
+                if (!validPath) {
+                    // 检查是否是初始有效路径
+                    if (currentPath !== 'Smqoal66yAWajLfdytPf') {
+                        console.log('❌ 路径无效:', currentPath, '需要valid参数');
+                        window.location.replace('expired.html?v=' + Date.now());
+                        return;
+                    }
+                } else {
+                    // 检查当前路径是否与valid参数匹配
+                    if (currentPath !== validPath) {
+                        console.log('❌ 路径无效:', currentPath, '有效路径:', validPath);
+                        window.location.replace('expired.html?v=' + Date.now());
+                        return;
+                    }
                 }
                 
                 console.log('✅ 路径有效:', currentPath);

@@ -104,13 +104,14 @@
         // 生成新URL
         function generateNewUrl() {
             const randomString = generateRandomString();
-            currentUrl = `${BASE_URL}/main.html?path=${randomString}&valid=${randomString}`;
+            const timestamp = Date.now();
+            currentUrl = `${BASE_URL}/main.html?path=${randomString}&valid=${randomString}&time=${timestamp}`;
             
             // 更新显示
             document.getElementById('currentUrl').href = currentUrl;
             document.getElementById('currentUrl').textContent = currentUrl;
             
-            alert('✅ 新网址已生成！\n\n注意：生成的网址包含验证参数，可以跨浏览器使用。');
+            alert('✅ 新网址已生成！\n\n注意：生成的网址包含时间戳，24小时内有效。\n旧网址已失效，只有新网址可以访问。');
         }
         
         // 创建新的HTML文件

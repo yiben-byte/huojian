@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL管理 - 获取有效网址</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f8ff;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .url-box {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #007bff;
+        }
+        .url-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            word-break: break-all;
+        }
+        .btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .btn:hover {
+            background: #218838;
+        }
+        .status {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 URL管理 - 获取有效网址</h1>
+        
+        <div class="status">
+            <strong>✅ 服务状态：</strong>正常运行<br>
+            <strong>🌐 基础域名：</strong>https://用户名.github.io/xhj<br>
+            <strong>⚠️ 注意：</strong>根域名无效，需要随机路径才能访问
+        </div>
+        
+        <div class="url-box">
+            <strong>🌐 当前有效网址：</strong><br>
+            <a href="#" id="currentUrl" class="url-link" target="_blank">点击下方按钮生成</a>
+        </div>
+        
+        <button class="btn" onclick="generateNewUrl()">🚀 生成新网址</button>
+        <button class="btn" onclick="copyUrl()">📋 复制网址</button>
+        <button class="btn" onclick="openUrl()">🔗 打开网址</button>
+        
+        <div class="status">
+            <strong>📱 使用说明：</strong><br>
+            1. 点击"生成新网址"按钮<br>
+            2. 点击"复制网址"保存<br>
+            3. 点击"打开网址"访问<br>
+            4. 分享给其他人使用
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'https://yiben-byte.github.io/xhj-share'; // 实际域名
+        let currentUrl = '';
+        
+        // 生成随机字符串
+        function generateRandomString() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < 20; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        // 生成新URL
+        function generateNewUrl() {
+            const randomString = generateRandomString();
+            currentUrl = `${BASE_URL}/main.html?path=${randomString}`;
+            
+            // 更新localStorage中的有效路径，使旧网址失效
+            localStorage.setItem('validPath', randomString);
+            
+            // 更新显示
+            document.getElementById('currentUrl').href = currentUrl;
+            document.getElementById('currentUrl').textContent = currentUrl;
+            
+            alert('✅ 新网址已生成！\n\n注意：旧网址已失效，只有新网址可以访问。');
+        }
+        
+        // 创建新的HTML文件
+        function createNewHtmlFile(path) {
+            // 这里需要调用GitHub API来创建文件
+            // 由于GitHub API需要认证，这里只是模拟
+            console.log(`创建新文件: ${path}.html`);
+        }
+        
+        // 复制URL
+        function copyUrl() {
+            if (currentUrl) {
+                navigator.clipboard.writeText(currentUrl).then(() => {
+                    alert('✅ 网址已复制到剪贴板！');
+                }).catch(() => {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = currentUrl;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('✅ 网址已复制到剪贴板！');
+                });
+            } else {
+                alert('❌ 请先生成网址！');
+            }
+        }
+        
+        // 打开URL
+        function openUrl() {
+            if (currentUrl) {
+                window.open(currentUrl, '_blank');
+            } else {
+                alert('❌ 请先生成网址！');
+            }
+        }
+        
+        console.log('✅ URL管理页面已加载');
+    </script>
+</body>
+</html>
